@@ -1,0 +1,29 @@
+# Default values for the pyxon-ai-agent Helm chart.
+
+replicaCount: 1
+
+image:
+  repository: pyxon-ai-agent
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  MODEL_NAME: "llama-3.3-70b-versatile"
+  SEARCH_MAX_RESULTS: "5"
+  URL_FETCH_TIMEOUT: "10"
+  URL_FETCH_MAX_SIZE: "51200"
+  RAG_ENABLED: "true"
+  EMBEDDING_MODEL: "all-MiniLM-L6-v2"
+  LOG_LEVEL: "INFO"

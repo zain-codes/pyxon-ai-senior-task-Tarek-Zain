@@ -1,0 +1,10 @@
+services:
+  agent:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src:/app/src:ro
+    restart: "no"

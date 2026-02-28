@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  MODEL_NAME: {{ .Values.config.MODEL_NAME | quote }}
+  SEARCH_MAX_RESULTS: {{ .Values.config.SEARCH_MAX_RESULTS | quote }}
+  URL_FETCH_TIMEOUT: {{ .Values.config.URL_FETCH_TIMEOUT | quote }}
+  URL_FETCH_MAX_SIZE: {{ .Values.config.URL_FETCH_MAX_SIZE | quote }}
+  RAG_ENABLED: {{ .Values.config.RAG_ENABLED | quote }}
+  EMBEDDING_MODEL: {{ .Values.config.EMBEDDING_MODEL | quote }}
+  LOG_LEVEL: {{ .Values.config.LOG_LEVEL | quote }}

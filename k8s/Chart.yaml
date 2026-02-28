@@ -1,0 +1,6 @@
+apiVersion: v2
+name: pyxon-ai-agent
+description: Helm chart for the Pyxon AI multi-agent system
+type: application
+version: 0.1.0
+appVersion: "1.0"

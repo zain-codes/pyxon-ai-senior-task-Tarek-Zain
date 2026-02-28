@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-pyxon-ai
+  labels:
+    app: pyxon-ai
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: pyxon-ai
+  template:
+    metadata:
+      labels:
+        app: pyxon-ai
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: pyxon-ai
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-config
+            - secretRef:
+                name: {{ .Release.Name }}-secrets
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          readinessProbe:
+            exec:
+              command:
+                - python
+                - "-c"
+                - "import src; print('ready')"
+            initialDelaySeconds: 10
+            periodSeconds: 30
