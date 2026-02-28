@@ -4,8 +4,8 @@ Implemented all three agent types plus bonus deliverables: multi-agent swarm wit
 
 ## Contact Information
 
-📧 Email: tarekzain97@gmail.com
-📱 Phone: +962-795-805-511
+📧 Email: zain20tarek@gmail.com
+📱 Phone: +966 538456188
 
 ## Features Implemented
 
