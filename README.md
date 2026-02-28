@@ -44,21 +44,24 @@ The **supervisor** receives a user question and routes it to the appropriate spe
 ## Quick Start
 
 ```bash
-# 1. Clone and install
+# 1. Clone
 git clone https://github.com/zain-codes/pyxon-ai-senior-task-Tarek-Zain.git
 cd pyxon-ai-senior-task-Tarek-Zain
-pip install -r requirements.txt
 
-# 2. Configure
-cp .env.example .env
-# Edit .env with your API keys (see Environment Variables below)
+# 2. Pull secrets (auto-fetches API keys — no accounts needed)
+python setup_env.py
 
-# 3. Run the demo
-python main.py
+# 3. Build and run
+docker compose build
+docker compose run agent python main.py
 
 # 4. Or run in interactive mode
-python main.py --interactive
+docker compose run agent python main.py --interactive
 ```
+
+> The setup script fetches API keys from AWS Secrets Manager automatically — no AWS account, no configuration, no manual key provisioning.
+>
+> **Prefer manual setup?** `cp .env.example .env` and edit with your own API keys (see [Environment Variables](#environment-variables)).
 
 ---
 
@@ -85,6 +88,7 @@ pyxon-ai-senior-task-Tarek-Zain/
 ├── main.py                          # End-to-end demo script (entry point)
 ├── requirements.txt                 # Python dependencies
 ├── requirements.lock                # Pinned versions for Docker builds
+├── setup_env.py                     # Pull secrets from AWS Secrets Manager
 ├── Dockerfile                       # Multi-stage Docker build
 ├── docker-compose.yml               # Single-command container orchestration
 ├── .env.example                     # Environment variable template
@@ -219,13 +223,12 @@ The test suite includes:
 ## Docker
 
 ```bash
-# Build the image
+# Pull secrets (skip if you already have a .env file)
+python setup_env.py
+
+# Build and run
 docker compose build
-
-# Run the demo
 docker compose run agent python main.py
-
-# Run in interactive mode
 docker compose run agent python main.py --interactive
 ```
 

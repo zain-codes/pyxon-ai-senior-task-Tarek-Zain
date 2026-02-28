@@ -40,6 +40,10 @@ coverage.xml
 faiss_index/
 model_cache/
 
+# ===== AWS CLI artifacts =====
+aws/
+awscliv2.zip
+
 # ===== OS =====
 .DS_Store
 Thumbs.db
