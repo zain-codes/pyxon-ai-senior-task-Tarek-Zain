@@ -18,8 +18,10 @@ env/
 
 # ===== Secrets =====
 .env
+.env.local
 *.env
 !.env.example
+!.env.local.example
 
 # ===== IDE =====
 .vscode/

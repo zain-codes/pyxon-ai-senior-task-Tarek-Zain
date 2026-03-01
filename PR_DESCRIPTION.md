@@ -36,10 +36,11 @@ See `README.md` for the full Mermaid architecture diagram.
 ```bash
 git clone https://github.com/zain-codes/pyxon-ai-senior-task-Tarek-Zain.git
 cd pyxon-ai-senior-task-Tarek-Zain
-pip install -r requirements.txt
-cp .env.example .env
-# Add your GROQ_API_KEY and TAVILY_API_KEY to .env
-python main.py
+cp .env.local.example .env.local     # fill in AWS credentials (provided separately)
+python setup_env.py                  # fetches API keys from AWS Secrets Manager → writes .env
+docker compose build
+docker compose run agent python main.py
+docker compose run agent python main.py --interactive
 ```
 
 ## Example Questions & Behavior

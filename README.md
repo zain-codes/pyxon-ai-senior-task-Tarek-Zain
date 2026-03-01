@@ -48,7 +48,9 @@ The **supervisor** receives a user question and routes it to the appropriate spe
 git clone https://github.com/zain-codes/pyxon-ai-senior-task-Tarek-Zain.git
 cd pyxon-ai-senior-task-Tarek-Zain
 
-# 2. Pull secrets (auto-fetches API keys — no accounts needed)
+# 2. Set up secrets (place .env.local, then pull from AWS Secrets Manager)
+cp .env.local.example .env.local
+# Fill in the AWS credentials (provided separately)
 python setup_env.py
 
 # 3. Build and run
@@ -59,7 +61,7 @@ docker compose run agent python main.py
 docker compose run agent python main.py --interactive
 ```
 
-> The setup script fetches API keys from AWS Secrets Manager automatically — no AWS account, no configuration, no manual key provisioning.
+> **Secrets are managed via AWS Secrets Manager.** The `setup_env.py` script reads AWS credentials from `.env.local` (provided separately, never committed), fetches the application API keys, and writes them to `.env`.
 >
 > **Prefer manual setup?** `cp .env.example .env` and edit with your own API keys (see [Environment Variables](#environment-variables)).
 
@@ -92,6 +94,7 @@ pyxon-ai-senior-task-Tarek-Zain/
 ├── Dockerfile                       # Multi-stage Docker build
 ├── docker-compose.yml               # Single-command container orchestration
 ├── .env.example                     # Environment variable template
+├── .env.local.example               # AWS credentials template (for setup_env.py)
 │
 ├── src/
 │   ├── config/
@@ -224,7 +227,7 @@ The test suite includes:
 
 ```bash
 # Pull secrets (skip if you already have a .env file)
-python setup_env.py
+python setup_env.py   # reads .env.local → fetches from AWS SM → writes .env
 
 # Build and run
 docker compose build

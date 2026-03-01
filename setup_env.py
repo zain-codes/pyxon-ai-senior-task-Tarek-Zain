@@ -2,14 +2,14 @@
 Pyxon AI — Pull secrets from AWS Secrets Manager and write .env
 
 Usage:
-    python setup_env.py
+    1. Place the .env.local file (provided separately) in the project root.
+    2. Run: python setup_env.py
 
-No AWS CLI, no AWS account, no configuration needed.
-Credentials are embedded (read-only, scoped to this project's secrets only).
+The script reads AWS credentials from .env.local, fetches the application
+secrets from AWS Secrets Manager, and writes them to .env.
 """
 
 import json
-import os
 import re
 import subprocess
 import sys
@@ -28,20 +28,49 @@ except ImportError:
 SECRET_NAME = "pyxon-ai/api-keys"
 REGION = "us-east-1"
 
-# Read-only IAM credentials scoped to secretsmanager:GetSecretValue on this
-# single secret. They cannot access any other AWS resource.
-AWS_ACCESS_KEY_ID = "AKIAW5PNQJS24XFLAVO7"
-AWS_SECRET_ACCESS_KEY = "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"
+
+def _load_env_local() -> dict[str, str]:
+    """Read key=value pairs from .env.local."""
+    env_local = Path(".env.local")
+    if not env_local.exists():
+        print("Error: .env.local not found.")
+        print("")
+        print("This file contains the AWS credentials needed to fetch secrets.")
+        print("It should have been provided to you separately. Place it in the")
+        print("project root and re-run this script.")
+        print("")
+        print("Expected contents:")
+        print("  AWS_ACCESS_KEY_ID=<value>")
+        print("  AWS_SECRET_ACCESS_KEY=<value>")
+        sys.exit(1)
+
+    values = {}
+    for line in env_local.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        key, _, value = line.partition("=")
+        values[key.strip()] = value.strip()
+    return values
 
 
 def main() -> None:
+    aws_creds = _load_env_local()
+
+    access_key = aws_creds.get("AWS_ACCESS_KEY_ID", "")
+    secret_key = aws_creds.get("AWS_SECRET_ACCESS_KEY", "")
+
+    if not access_key or not secret_key:
+        print("Error: .env.local must contain AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.")
+        sys.exit(1)
+
     print("Fetching secrets from AWS Secrets Manager...")
 
     client = boto3.client(
         "secretsmanager",
         region_name=REGION,
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
     )
 
     try:
