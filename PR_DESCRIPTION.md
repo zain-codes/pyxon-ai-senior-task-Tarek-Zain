@@ -36,8 +36,7 @@ See `README.md` for the full Mermaid architecture diagram.
 ```bash
 git clone https://github.com/zain-codes/pyxon-ai-senior-task-Tarek-Zain.git
 cd pyxon-ai-senior-task-Tarek-Zain
-cp .env.local.example .env.local     # fill in AWS credentials (provided separately)
-python setup_env.py                  # fetches API keys from AWS Secrets Manager → writes .env
+python setup_env.py                  # fill in .env.local (provided separately), fetches API keys from AWS SM → writes .env
 docker compose build
 docker compose run agent python main.py
 docker compose run agent python main.py --interactive

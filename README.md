@@ -48,9 +48,7 @@ The **supervisor** receives a user question and routes it to the appropriate spe
 git clone https://github.com/zain-codes/pyxon-ai-senior-task-Tarek-Zain.git
 cd pyxon-ai-senior-task-Tarek-Zain
 
-# 2. Set up secrets (place .env.local, then pull from AWS Secrets Manager)
-cp .env.local.example .env.local
-# Fill in the AWS credentials (provided separately)
+# 2. Set up secrets (fill in .env.local with AWS credentials provided separately)
 python setup_env.py
 
 # 3. Build and run
